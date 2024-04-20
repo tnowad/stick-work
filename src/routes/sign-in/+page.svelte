@@ -1,73 +1,74 @@
 <script lang="ts">
-	import { firebaseAuth } from '$lib/firebase/firebase.app';
-	import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
-
-	const provider = new GoogleAuthProvider();
-
-	const handleSignInWithGoogle = async () => {
-		await signInWithPopup(firebaseAuth, provider);
-	};
-
-	firebaseAuth.onAuthStateChanged(async (user) => {
-		if (user) {
-			console.log('User is signed in');
-		} else {
-			console.log('User is signed out');
-		}
-	});
+  import { enhance } from '$app/forms';
+  import { firebaseAuth } from '$lib/firebase/firebase.app';
+  import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 </script>
 
 <section class="hero min-h-screen bg-base-200">
-	<div class="hero-content flex-col lg:flex-row-reverse">
-		<div class="text-center lg:text-left">
-			<h1 class="text-5xl font-bold">Sign In Now!</h1>
-			<p class="py-6">Sign in to access your account and start using our services.</p>
-		</div>
-		<div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-			<form class="card-body">
-				<div class="form-control">
-					<label class="label" for="emailInput">
-						<span class="label-text">Email</span>
-					</label>
-					<input
-						type="email"
-						placeholder="email"
-						id="emailInput"
-						class="input input-bordered"
-						required
-					/>
-				</div>
-				<div class="form-control">
-					<label class="label" for="passwordInput">
-						<span class="label-text">Password</span>
-					</label>
-					<input
-						type="password"
-						placeholder="password"
-						id="passwordInput"
-						class="input input-bordered"
-						required
-					/>
-					<div class="label">
-						<a href="/forgot-password" class="label-text-alt link link-hover">Forgot password?</a>
-					</div>
-				</div>
-				<div class="form-control">
-					<button class="btn btn-primary">Login</button>
-				</div>
-				<div class="label">
-					<span class="label-text-alt"
-						>Don't have an account? <a href="/sign-up" class="label-text-alt link link-hover"
-							>Sign up now</a
-						>
-					</span>
-				</div>
-				<div class="divider">OR</div>
+  <div class="hero-content flex-col lg:flex-row-reverse">
+    <div class="text-center lg:text-left">
+      <h1 class="text-5xl font-bold">Sign In Now!</h1>
+      <p class="py-6">Sign in to access your account and start using our services.</p>
+    </div>
+    <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+      <form class="card-body pb-0">
+        <div class="form-control">
+          <label class="label" for="emailInput">
+            <span class="label-text">Email</span>
+          </label>
+          <input
+            type="email"
+            placeholder="email"
+            id="emailInput"
+            class="input input-bordered"
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label class="label" for="passwordInput">
+            <span class="label-text">Password</span>
+          </label>
+          <input
+            type="password"
+            placeholder="password"
+            id="passwordInput"
+            class="input input-bordered"
+            required
+          />
+          <div class="label">
+            <a href="/forgot-password" class="label-text-alt link link-hover">Forgot password?</a>
+          </div>
+        </div>
+        <div class="form-control">
+          <button class="btn btn-primary">Login</button>
+        </div>
+        <div class="label">
+          <span class="label-text-alt"
+            >Don't have an account? <a href="/sign-up" class="label-text-alt link link-hover"
+              >Sign up now</a
+            >
+          </span>
+        </div>
+      </form>
+      <form
+        class="card-body pt-0"
+        method="post"
+        action="?/signInWithGoogle"
+        use:enhance={async ({ formData }) => {
+          const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
+          const idToken = await credential.user.getIdToken();
+          formData.set('idToken', idToken);
 
-				<div class="form-control">
-					<button class="btn" on:click={handleSignInWithGoogle}>SignIn with Google</button>
-				</div>
-			</form>
-		</div>
-	</div>
+          return ({ result }) => {
+            console.log(result);
+          };
+        }}
+      >
+        <div class="divider">OR</div>
+        <div class="form-control">
+          <button class="btn">SignIn with Google</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </section>
