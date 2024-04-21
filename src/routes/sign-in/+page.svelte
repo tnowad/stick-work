@@ -1,6 +1,20 @@
 <script lang="ts">
+	import { firebaseAuth } from '$lib/firebase/firebase.app';
+	import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+
+	const provider = new GoogleAuthProvider();
+
 	const handleSignInWithGoogle = async () => {
+		await signInWithPopup(firebaseAuth, provider);
 	};
+
+	firebaseAuth.onAuthStateChanged(async (user) => {
+		if (user) {
+			console.log('User is signed in');
+		} else {
+			console.log('User is signed out');
+		}
+	});
 </script>
 
 <section class="hero min-h-screen bg-base-200">
