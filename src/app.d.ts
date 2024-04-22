@@ -7,6 +7,7 @@ declare global {
     // interface Error {}
     interface Locals {
       user?: DecodedIdToken;
+      role?: 'admin' | 'user';
     }
     // interface PageData {}
     // interface PageState {}
