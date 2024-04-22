@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ThemeSelect from '$lib/components/theme-select.svelte';
   import './global.css';
 </script>
 
@@ -34,6 +35,7 @@
     <a class="btn btn-ghost text-xl">Stick Work</a>
   </div>
   <div class="navbar-end">
+    <ThemeSelect />
     <button class="btn btn-ghost btn-circle">
       <svg
         xmlns="http://www.w3.org/2000/svg"
