@@ -1,9 +1,9 @@
-import { error, json } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import admin from '$lib/firebase/firebase.admin';
 
 export const actions = {
-  async signInWithGoogle({ request, cookies }) {
+  async signInWithIdToken({ request, cookies }) {
     const formData = await request.formData();
 
     const idToken = formData.get('idToken') as string;
