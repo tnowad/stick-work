@@ -39,7 +39,7 @@ const tryGetRole = async (event: RequestEvent) => {
 
   try {
     const user = await admin.auth().getUser(event.locals.user.uid);
-    event.locals.user.role = user.customClaims?.role || 'user';
+    event.locals.role = user.customClaims?.role || 'user';
   } catch (error) {
     console.error(error);
   }
