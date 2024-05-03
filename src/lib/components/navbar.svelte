@@ -39,7 +39,7 @@
             <li><a href="/dashboard">Dashboard</a></li>
           {/if}
 
-          <li><a href="/logout">Logout</a></li>
+          <li><a href="/sign-out">Sign out</a></li>
         </ul>
       </div>
     {:else}
