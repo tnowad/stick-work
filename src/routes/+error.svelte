@@ -2,6 +2,48 @@
   import './global.css';
 
   const conversations = [
+    {
+      name: 'Project Manager',
+      type: 'text',
+      message: 'Alright guys, I wanna get this website up and running by the end of the day.',
+      avatar: '/avatar-1.jpg',
+      delay: 1000
+    },
+    {
+      name: 'Intern',
+      type: 'text',
+      message: 'Okay, I think I can do that...',
+      avatar: '/avatar-2.jpg',
+      delay: 4000
+    },
+    {
+      name: 'Intern',
+      type: 'text',
+      message: '**Put everything in a try-catch block**',
+      avatar: '/avatar-2.jpg',
+      delay: 6000
+    },
+    {
+      name: 'Project manager',
+      type: 'text',
+      message: '...',
+      avatar: '/avatar-3.jpg',
+      delay: 8000
+    },
+    {
+      name: 'Intern',
+      type: 'text',
+      message: '...',
+      avatar: '/avatar-2.jpg',
+      delay: 9000
+    },
+    {
+      name: 'Project manager',
+      type: 'image',
+      message: '/avatar-4.jpg',
+      avatar: '/avatar-3.jpg',
+      delay: 10000
+    }
   ];
 
   let showTypingIndicator = true;
