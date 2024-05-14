@@ -42,12 +42,32 @@ export const load: PageServerLoad = async ({ locals }) => {
     eventsCollection.where('userId', '==', uid).get()
   ]);
 
-  const calendars = calendarsSnapshot.docs.map((doc) => ({
-    id: doc.id
+  const calendars: Calendar[] = calendarsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.data().name
   }));
 
-  const events = eventsSnapshot.docs.map((doc) => ({
-    id: doc.id
+  const events: Event[] = eventsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.data().name,
+    start: doc.data().start.toDate(),
+    end: doc.data().end.toDate(),
+    repeat: doc.data().repeat
+      ? {
+          type: doc.data().repeat.type,
+          interval: doc.data().repeat.interval,
+          start: doc.data().repeat.start.toDate(),
+          end: doc.data().repeat.end.toDate()
+        }
+      : undefined,
+    allDay: doc.data().allDay
+      ? {
+          start: doc.data().allDay.start.toDate(),
+          end: doc.data().allDay.end.toDate()
+        }
+      : undefined,
+    description: doc.data().description,
+    calendarId: doc.data().calendarId
   }));
 
   return {
