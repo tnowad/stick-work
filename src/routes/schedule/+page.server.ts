@@ -1,4 +1,5 @@
 import admin from '$lib/firebase/firebase.admin';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 type Event = {
@@ -29,7 +30,7 @@ export const load: PageServerLoad = async ({ locals }) => {
   const uid = locals.user?.uid;
 
   if (!uid) {
-    return { status: 401, error: new Error('Unauthorized') };
+    throw error(401, 'Unauthorized');
   }
 
   const db = admin.firestore();
