@@ -1,5 +1,6 @@
 <script>
   import './global.css';
+  import { page } from '$app/stores';
 
   const conversations = [
     {
@@ -65,8 +66,9 @@
 </script>
 
 <div class="flex flex-col items-center w-full h-screen space-y-4">
-  <h1 class="text-4xl font-bold">Error 404</h1>
-  <p class="text-lg">This page could not be found.</p>
+  <h1 class="text-4xl font-bold">Error {$page.status}</h1>
+
+  <h1>{$page.error?.message}</h1>
   <div class="flex flex-col space-y-4 w-full max-w-sm">
     {#each conversationPromises as conversationPromise}
       {#await conversationPromise then conversation}
