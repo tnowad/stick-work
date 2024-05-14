@@ -17,8 +17,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   await tryGetRole(event);
   await checkAccess(event);
 
-  const response = await resolve(event);
-  return response;
+  return await resolve(event);
 };
 
 const tryGetCurrentUser = async (event: RequestEvent) => {
@@ -28,10 +27,9 @@ const tryGetCurrentUser = async (event: RequestEvent) => {
 
   try {
     const decodedClaims: DecodedIdToken = await admin.auth().verifySessionCookie(session, true);
-
     event.locals.user = decodedClaims;
   } catch (error) {
-    console.error(error);
+    console.error('Error verifying session cookie:', error);
   }
 };
 
@@ -42,7 +40,7 @@ const tryGetRole = async (event: RequestEvent) => {
     const user = await admin.auth().getUser(event.locals.user.uid);
     event.locals.role = user.customClaims?.role || 'user';
   } catch (error) {
-    console.error(error);
+    console.error('Error fetching user role:', error);
   }
 };
 
