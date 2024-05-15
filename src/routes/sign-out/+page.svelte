@@ -1,5 +1,7 @@
 <script lang="ts">
+  import { enhance } from '$app/forms';
   import { goto } from '$app/navigation';
+  import { AppRoute } from '$lib/constants';
   import { onMount } from 'svelte';
 
   let confirmSignOutModal: HTMLDialogElement;
@@ -14,7 +16,18 @@
     <h3 class="font-bold text-lg">Sign Out!</h3>
     <p class="py-4">Do you want to sign out?</p>
     <div class="modal-action">
-      <form method="dialog">
+      <form
+        method="post"
+        action="/sign-out"
+        use:enhance={() => {
+          return async ({ result }) => {
+            if (result.type === 'success') {
+              await goto(AppRoute.HOME, { invalidateAll: true });
+              return;
+            }
+          };
+        }}
+      >
         <button type="submit" class="btn">Yes</button>
         <button class="btn">No</button>
       </form>
