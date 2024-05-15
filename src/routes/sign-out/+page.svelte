@@ -29,7 +29,12 @@
         }}
       >
         <button type="submit" class="btn">Yes</button>
-        <button class="btn">No</button>
+        <button
+          on:click|preventDefault={() => {
+            history.back();
+          }}
+          class="btn">No</button
+        >
       </form>
     </div>
   </div>
