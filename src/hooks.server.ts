@@ -4,7 +4,7 @@ import { error, redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 
 const authRequiredPaths = new Set([AppRoute.PROFILE]);
-const adminRequiredPaths = new Set([AppRoute.ADMIN]);
+const adminRequiredPaths = new Set([AppRoute.DASHBOARD, AppRoute.DASHBOARD_USER_MANAGEMENT]);
 
 const isAuthRequiredPath = (path: string) => authRequiredPaths.has(path as AppRoute);
 const isAdminRequiredPath = (path: string) => adminRequiredPaths.has(path as AppRoute);
