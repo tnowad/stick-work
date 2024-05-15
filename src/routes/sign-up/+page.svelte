@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { enhance } from '$app/forms';
+  import { applyAction, enhance } from '$app/forms';
+  import { goto } from '$app/navigation';
+  import { AppRoute } from '$lib/constants';
   import { firebaseAuth } from '$lib/firebase/firebase.app';
   import {
     GoogleAuthProvider,
@@ -28,8 +30,12 @@
           const idToken = await credential.user.getIdToken();
           formData.set('idToken', idToken);
 
-          return ({result}) => {
-            console.log(result);
+          return async ({ result }) => {
+            if (result.type === 'success') {
+              await goto(AppRoute.HOME, { invalidateAll: true });
+              return;
+            }
+            await applyAction(result);
           };
         }}
       >
@@ -79,8 +85,12 @@
           const idToken = await credential.user.getIdToken();
           formData.set('idToken', idToken);
 
-          return ({ result }) => {
-            console.log(result);
+          return async ({ result }) => {
+            if (result.type === 'success') {
+              await goto(AppRoute.HOME, { invalidateAll: true });
+              return;
+            }
+            await applyAction(result);
           };
         }}
       >
