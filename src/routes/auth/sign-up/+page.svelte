@@ -20,7 +20,7 @@
       <form
         class="card-body pb-0"
         method="post"
-        action="/sign-in/?/signInWithIdToken"
+        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
         use:enhance={async ({ formData }) => {
           const email = formData.get('email') as string;
           const password = formData.get('password') as string;
@@ -70,8 +70,9 @@
         </div>
         <div class="label">
           <span class="label-text-alt"
-            >Already have an account? <a href="/sign-in" class="label-text-alt link link-hover"
-              >Sign in now</a
+            >Already have an account? <a
+              href={AppRoute.AUTH_SIGN_IN}
+              class="label-text-alt link link-hover">Sign in now</a
             >
           </span>
         </div>
@@ -79,7 +80,7 @@
       <form
         class="card-body pt-0"
         method="post"
-        action="/sign-in/?/signInWithIdToken"
+        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
         use:enhance={async ({ formData }) => {
           const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
           const idToken = await credential.user.getIdToken();

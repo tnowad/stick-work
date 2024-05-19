@@ -16,7 +16,7 @@
       <form
         class="card-body pb-0"
         method="post"
-        action="/sign-in/?/signInWithIdToken"
+        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
         use:enhance={async ({ formData }) => {
           const email = formData.get('email') as string;
           const password = formData.get('password') as string;
@@ -60,7 +60,9 @@
             required
           />
           <div class="label">
-            <a href="/forgot-password" class="label-text-alt link link-hover">Forgot password?</a>
+            <a href={AppRoute.AUTH_FORGOT_PASSWORD} class="label-text-alt link link-hover"
+              >Forgot password?</a
+            >
           </div>
         </div>
         <div class="form-control">
@@ -68,8 +70,9 @@
         </div>
         <div class="label">
           <span class="label-text-alt"
-            >Don't have an account? <a href="/sign-up" class="label-text-alt link link-hover"
-              >Sign up now</a
+            >Don't have an account? <a
+              href={AppRoute.AUTH_SIGN_UP}
+              class="label-text-alt link link-hover">Sign up now</a
             >
           </span>
         </div>
@@ -77,7 +80,7 @@
       <form
         class="card-body pt-0"
         method="post"
-        action="/sign-in/?/signInWithIdToken"
+        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
         use:enhance={async ({ formData }) => {
           const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
           const idToken = await credential.user.getIdToken();

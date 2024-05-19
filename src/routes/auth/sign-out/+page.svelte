@@ -11,7 +11,7 @@
   });
 </script>
 
-<dialog class="modal" bind:this={confirmSignOutModal} on:close={() => goto('/')}>
+<dialog class="modal" bind:this={confirmSignOutModal} on:close={() => goto(AppRoute.HOME)}>
   <div class="modal-box">
     <h3 class="font-bold text-lg">Sign Out!</h3>
     <p class="py-4">Do you want to sign out?</p>
