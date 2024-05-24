@@ -11,6 +11,10 @@
   });
 </script>
 
+<svelte:head>
+  <title>{data.meta.title}</title>
+</svelte:head>
+
 <dialog class="modal" bind:this={confirmSignOutModal} on:close={() => goto(AppRoute.HOME)}>
   <div class="modal-box">
     <h3 class="font-bold text-lg">Sign Out!</h3>

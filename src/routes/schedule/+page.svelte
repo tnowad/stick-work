@@ -6,6 +6,10 @@
   console.log(data);
 </script>
 
+<svelte:head>
+  <title>{data.meta.title}</title>
+</svelte:head>
+
 <div class="w-full min-h-screen">
   <!-- Header show current date, button to change view (day, week, month, agenda) -->
   <!-- Sidebar show calender, filter events -->

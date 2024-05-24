@@ -72,6 +72,10 @@ export const load: PageServerLoad = async ({ locals }) => {
   }));
 
   return {
+    meta: {
+      title: 'Schedule',
+      description: 'Your schedule'
+    },
     calendars,
     events
   };

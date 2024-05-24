@@ -9,7 +9,12 @@ declare global {
       user?: DecodedIdToken;
       role?: 'admin' | 'user';
     }
-    // interface PageData {}
+    interface PageData {
+      meta: {
+        title: string;
+        description?: string;
+      };
+    }
     // interface PageState {}
     // interface Platform {}
   }
