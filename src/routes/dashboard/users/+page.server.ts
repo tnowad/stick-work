@@ -1,7 +1,7 @@
 import admin from '$lib/firebase/firebase.admin';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async () => {
+export const load: PageServerLoad = async () => {
   const listUser = await admin.auth().listUsers();
   const users = listUser.users.map((user) => ({
     uid: user.uid,
@@ -12,6 +12,9 @@ export const load: PageLoad = async () => {
   }));
 
   return {
-    users
+    users,
+    meta: {
+      title: 'User Management'
+    }
   };
 };

@@ -5,6 +5,10 @@
   console.log(data);
 </script>
 
+<svelte:head>
+  <title>{data.meta.title}</title>
+</svelte:head>
+
 <div class="overflow-x-auto">
   <table class="table table-zebra">
     <thead>
