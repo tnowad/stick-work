@@ -3,8 +3,11 @@
   import { goto } from '$app/navigation';
   import { AppRoute } from '$lib/constants';
   import { onMount } from 'svelte';
+  import type { PageData } from './$types';
 
   let confirmSignOutModal: HTMLDialogElement;
+
+  export let data: PageData;
 
   onMount(() => {
     confirmSignOutModal.showModal();
@@ -22,7 +25,7 @@
     <div class="modal-action">
       <form
         method="post"
-        action="/sign-out"
+        action={AppRoute.AUTH_SIGN_OUT}
         use:enhance={() => {
           return async ({ result }) => {
             if (result.type === 'success') {
