@@ -1,7 +1,7 @@
 import { AppRoute } from '$lib/constants';
 import { redirect } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = () => {
+export const load: PageServerLoad = () => {
   redirect(302, AppRoute.DASHBOARD_USER_MANAGEMENT);
 };
