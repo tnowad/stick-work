@@ -20,7 +20,7 @@
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
           <div class="w-10 rounded-full">
-            <img alt="avatar" src="/avatar.jpg" />
+            <img alt="avatar" src={user.picture ?? '/avatar.jpg'} />
           </div>
         </div>
         <ul
