@@ -3,6 +3,12 @@
     { value: 'dark', label: 'Dark' },
     { value: 'light', label: 'Light' }
   ];
+
+  const handleThemeChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    document.documentElement.setAttribute('data-theme', target.value);
+    localStorage.setItem('theme', target.value);
+  };
 </script>
 
 <div class="dropdown">
@@ -28,6 +34,7 @@
           type="radio"
           name="theme-dropdown"
           class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+          on:change={handleThemeChange}
           aria-label={label}
           {value}
         />
