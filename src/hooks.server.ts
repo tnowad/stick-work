@@ -2,6 +2,7 @@ import { AppRoute } from '$lib/constants';
 import admin from '$lib/firebase/firebase.admin';
 import { error, redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
 import type { DecodedIdToken } from 'firebase-admin/auth';
+import NodeCache from 'node-cache';
 
 const authRequiredPaths = new Set([
   AppRoute.PROFILE,
@@ -17,6 +18,8 @@ const isAdminRequiredPath = (path: string) => adminRequiredPaths.has(path as App
 const isAuth = (event: RequestEvent) => event?.locals?.user;
 const isAdmin = (event: RequestEvent) => event?.locals?.user?.role === 'admin';
 
+const userCache = new NodeCache({ stdTTL: 60 * 10 });
+
 export const handle: Handle = async ({ event, resolve }) => {
   await tryGetCurrentUser(event);
   await tryGetRole(event);
@@ -30,9 +33,17 @@ const tryGetCurrentUser = async (event: RequestEvent) => {
 
   if (!session) return;
 
+  const cachedUser = userCache.get<DecodedIdToken>(session);
+  if (cachedUser) {
+    event.locals.user = cachedUser;
+    return;
+  }
+
   try {
     const decodedClaims: DecodedIdToken = await admin.auth().verifySessionCookie(session, true);
     event.locals.user = decodedClaims;
+
+    userCache.set(session, decodedClaims);
   } catch (error) {
     console.error('Error verifying session cookie:', error);
   }
@@ -41,9 +52,17 @@ const tryGetCurrentUser = async (event: RequestEvent) => {
 const tryGetRole = async (event: RequestEvent) => {
   if (!event.locals.user) return;
 
+  const cachedRole = userCache.get<string>(event.locals.user.uid + '_role');
+  if (cachedRole && (cachedRole === 'admin' || cachedRole === 'user')) {
+    event.locals.role = cachedRole;
+    return;
+  }
+
   try {
     const user = await admin.auth().getUser(event.locals.user.uid);
     event.locals.role = user.customClaims?.role || 'user';
+
+    userCache.set(event.locals.user.uid + '_role', event.locals.role);
   } catch (error) {
     console.error('Error fetching user role:', error);
   }
