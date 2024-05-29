@@ -2,6 +2,7 @@ export enum AppRoute {
   HOME = '/',
   PROFILE = '/profile',
   SETTINGS = '/settings',
+  SCHEDULE = '/schedule',
 
   AUTH_SIGN_IN = '/auth/sign-in',
   AUTH_SIGN_UP = '/auth/sign-up',
