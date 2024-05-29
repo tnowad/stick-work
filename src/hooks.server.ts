@@ -3,7 +3,12 @@ import admin from '$lib/firebase/firebase.admin';
 import { error, redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 
-const authRequiredPaths = new Set([AppRoute.PROFILE]);
+const authRequiredPaths = new Set([
+  AppRoute.PROFILE,
+  AppRoute.SETTINGS,
+  AppRoute.SCHEDULE,
+  AppRoute.AUTH_SIGN_OUT
+]);
 const adminRequiredPaths = new Set([AppRoute.DASHBOARD, AppRoute.DASHBOARD_USER_MANAGEMENT]);
 
 const isAuthRequiredPath = (path: string) => authRequiredPaths.has(path as AppRoute);
