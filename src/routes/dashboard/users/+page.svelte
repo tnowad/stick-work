@@ -94,7 +94,10 @@
                       d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5L2 22l1.5-5.5Zm-2 2l4 4"
                     ></path></svg
                   ></button
-                ><button aria-label="Show user" class="btn btn-sm btn-square btn-ghost"
+                ><a
+                  aria-label="Show user"
+                  class="btn btn-sm btn-square btn-ghost"
+                  href={`${AppRoute.DASHBOARD_USER_MANAGEMENT}/${user.uid}`}
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -117,7 +120,7 @@
                         r="3"
                       ></circle></g
                     ></svg
-                  ></button
+                  ></a
                 ><button
                   aria-label="Delete user"
                   class="btn text-error/70 hover:bg-error/20 btn-sm btn-square btn-ghost"
