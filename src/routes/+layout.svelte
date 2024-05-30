@@ -1,8 +1,7 @@
 <script lang="ts">
-  import { navigating } from '$app/stores';
-  import Navbar from '$lib/components/navbar.svelte';
-  import type { LayoutData } from './$types';
   import './global.css';
+  import { navigating } from '$app/stores';
+  import type { LayoutData } from './$types';
   export let data: LayoutData;
 
   let isNavigating = false;
@@ -26,7 +25,5 @@
     <img src="/loading.gif" class="w-20 h-20" alt="loading" />
   </span>
 {/if}
-
-<Navbar user={data.user} role={data.role} />
 
 <slot />
