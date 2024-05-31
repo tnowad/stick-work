@@ -2,6 +2,7 @@
   import ThemeSelect from '$lib/components/theme-select.svelte';
   import { AppRoute } from '$lib/constants';
   import { cn } from '$lib/utils/classnames';
+  import { onMount } from 'svelte';
   import type { LayoutData } from './$types';
   import Icon from '@iconify/svelte';
   export let data: LayoutData;
@@ -76,6 +77,21 @@
       icon: 'heroicons:bolt'
     }
   ];
+
+  onMount(() => {
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        showSearchModal = true;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeydown);
+    };
+  });
 </script>
 
 <div role="navigation" aria-label="Navbar" class="navbar z-10 border-b border-base-200 px-3">
