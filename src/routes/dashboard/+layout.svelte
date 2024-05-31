@@ -1,5 +1,6 @@
 <script lang="ts">
   import ThemeSelect from '$lib/components/theme-select.svelte';
+  import { AppRoute } from '$lib/constants';
   import type { LayoutData } from './$types';
   import Icon from '@iconify/svelte';
   export let data: LayoutData;
@@ -24,6 +25,52 @@
       title: 'Product ABC123 is running low in stock.',
       time: '1 Hour ago',
       image: '/avatar-3.jpg'
+    }
+  ];
+
+  const actions = [
+    {
+      title: 'Create a new folder',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:folder-plus'
+    },
+    {
+      title: 'Upload new document',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:document-plus'
+    },
+    {
+      title: 'Invite to project',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:user-plus'
+    }
+  ];
+
+  const quickLinks = [
+    {
+      title: 'File Manager',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:rectangle-stack'
+    },
+    {
+      title: 'Profile',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:user'
+    },
+    {
+      title: 'Dashboard',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:squares-2x2'
+    },
+    {
+      title: 'Support',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:question-mark-circle'
+    },
+    {
+      title: 'Keyboard Shortcuts',
+      link: AppRoute.DASHBOARD,
+      icon: 'heroicons:bolt'
     }
   ];
 </script>
@@ -64,56 +111,24 @@
         <div class="border-t border-base-content/10">
           <ul class="menu">
             <li class="menu-title">Actions</li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:folder-plus" class="w-5 h-5" />
-                <p class="grow text-sm">Create a new folder</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:document-plus" class="w-5 h-5" />
-                <p class="grow text-sm">Upload new document</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:user-plus" class="w-5 h-5" />
-                <p class="grow text-sm">Invite to project</p>
-              </div>
-            </li>
+            {#each actions as action}
+              <li class="">
+                <div>
+                  <Icon icon={action.icon} class="w-5 h-5" />
+                  <p class="grow text-sm">{action.title}</p>
+                </div>
+              </li>
+            {/each}
             <hr class="-mx-2 mt-3 h-px border-base-content/10" />
             <li class="menu-title">Quick Links</li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:rectangle-stack" class="w-5 h-5" />
-                <p class="grow text-sm">File Manager</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:user" class="w-5 h-5" />
-                <p class="grow text-sm">Profile</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:squares-2x2" class="w-5 h-5" />
-                <p class="grow text-sm">Dashboard</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:question-mark-circle" class="w-5 h-5" />
-                <p class="grow text-sm">Support</p>
-              </div>
-            </li>
-            <li class="">
-              <div>
-                <Icon icon="heroicons:bolt" class="w-5 h-5" />
-                <p class="grow text-sm">Keyboard Shortcuts</p>
-              </div>
-            </li>
+            {#each quickLinks as quickLink}
+              <li class="">
+                <div>
+                  <Icon icon={quickLink.icon} class="w-5 h-5" />
+                  <p class="grow text-sm">{quickLink.title}</p>
+                </div>
+              </li>
+            {/each}
           </ul>
         </div>
       </div>
