@@ -77,6 +77,9 @@ importers:
       svelte-check:
         specifier: ^3.6.0
         version: 3.8.0(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.144)
+      svelte-lazy-image:
+        specifier: ^0.5.1
+        version: 0.5.1
       tailwindcss:
         specifier: ^3.4.3
         version: 3.4.3
@@ -2216,6 +2219,9 @@ packages:
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
+
+  svelte-lazy-image@0.5.1:
+    resolution: {integrity: sha512-BDwywMngYjrEtL73N2ZKYYnWlNBWSnw31y1Mb3kNeXVc/9iDir6Ew3bfuDtuEyi3evBFXF0jixkCMFuTseWjWQ==}
 
   svelte-preprocess@5.1.4:
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}
@@ -4902,6 +4908,8 @@ snapshots:
   svelte-hmr@0.16.0(svelte@5.0.0-next.144):
     dependencies:
       svelte: 5.0.0-next.144
+
+  svelte-lazy-image@0.5.1: {}
 
   svelte-preprocess@5.1.4(postcss-load-config@4.0.2(postcss@8.4.38))(postcss@8.4.38)(svelte@5.0.0-next.144)(typescript@5.4.5):
     dependencies:
