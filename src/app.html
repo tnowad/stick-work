@@ -10,7 +10,6 @@
       const colorThemeKeyName = 'color-theme';
       let theme = localStorage.getItem(colorThemeKeyName);
       if (!theme) {
-        document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem(colorThemeKeyName, 'light');
       } else {
         document.documentElement.setAttribute('data-theme', theme);
