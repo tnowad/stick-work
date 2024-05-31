@@ -7,13 +7,24 @@
     %sveltekit.head%
 
     <script>
-      const colorThemeKeyName = 'color-theme';
-      let theme = localStorage.getItem(colorThemeKeyName);
-      if (!theme) {
-        localStorage.setItem(colorThemeKeyName, 'light');
-      } else {
+      const COLOR_THEME_KEY = 'color-theme';
+      const DEFAULT_THEME = 'light';
+
+      const applyTheme = (theme) => {
         document.documentElement.setAttribute('data-theme', theme);
-      }
+        localStorage.setItem(COLOR_THEME_KEY, theme);
+      };
+
+      const initializeTheme = () => {
+        const storedTheme = localStorage.getItem(COLOR_THEME_KEY);
+        if (!storedTheme) {
+          applyTheme(DEFAULT_THEME);
+        } else {
+          applyTheme(storedTheme);
+        }
+      };
+
+      initializeTheme();
     </script>
   </head>
 
