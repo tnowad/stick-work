@@ -12,3 +12,8 @@ export enum AppRoute {
   DASHBOARD = '/dashboard',
   DASHBOARD_USER_MANAGEMENT = '/dashboard/users'
 }
+
+export enum Theme {
+  LIGHT = 'light',
+  DARK = 'dark'
+}

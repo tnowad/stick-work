@@ -1,44 +1,34 @@
 <script lang="ts">
-  const options = [
-    { value: 'dark', label: 'Dark' },
-    { value: 'light', label: 'Light' }
-  ];
+  import Icon from '@iconify/svelte';
+  import { cn } from '$lib/utils/classnames';
+  import { onMount } from 'svelte';
+  import { Theme } from '$lib/constants';
+  const COLOR_THEME_KEY = 'color-theme';
 
-  const handleThemeChange = (e: Event) => {
-    const target = e.target as HTMLInputElement;
-    document.documentElement.setAttribute('data-theme', target.value);
-    localStorage.setItem('theme', target.value);
+  let currentTheme = $state(Theme.LIGHT);
+
+  const handleToggleTheme = () => {
+    currentTheme = currentTheme === Theme.DARK ? Theme.LIGHT : Theme.DARK;
+    localStorage.setItem(COLOR_THEME_KEY, currentTheme);
+    document.documentElement.setAttribute('data-theme', currentTheme);
   };
+
+  onMount(() => {
+    const theme = localStorage.getItem(COLOR_THEME_KEY);
+    if (theme && Object.values(Theme).includes(theme as Theme)) {
+      currentTheme = theme as Theme;
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  });
 </script>
 
-<div class="dropdown">
-  <div tabindex="0" role="button" class="btn m-1">
-    Theme
-    <svg
-      width="12px"
-      height="12px"
-      class="h-2 w-2 fill-current opacity-60 inline-block"
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 2048 2048"
-      ><path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path></svg
-    >
-  </div>
-  <ul
-    role="menu"
-    tabindex="0"
-    class="dropdown-content z-[1] p-2 shadow-2xl bg-base-300 rounded-box w-32"
-  >
-    {#each options as { value, label }}
-      <li>
-        <input
-          type="radio"
-          name="theme-dropdown"
-          class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
-          on:change={handleThemeChange}
-          aria-label={label}
-          {value}
-        />
-      </li>
-    {/each}
-  </ul>
-</div>
+<button
+  aria-label={currentTheme === Theme.LIGHT ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+  class={cn('btn btn-sm btn-circle btn-ghost swap swap-rotate', {
+    'swap-active': currentTheme === Theme.LIGHT
+  })}
+  onclick={handleToggleTheme}
+>
+  <Icon icon="heroicons:sun" class="w-5 h-5 swap-on" />
+  <Icon icon="heroicons:moon" class="w-5 h-5 swap-off" />
+</button>
