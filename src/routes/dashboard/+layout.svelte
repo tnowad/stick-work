@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ThemeSelect from '$lib/components/theme-select.svelte';
   import type { LayoutData } from './$types';
   import Icon from '@iconify/svelte';
   export let data: LayoutData;
@@ -123,9 +124,7 @@
   </div>
   <div class="navbar-center"></div>
   <div class="gap-1.5 navbar-end">
-    <button aria-label="Theme toggler" class="btn btn-sm btn-circle btn-ghost">
-      <Icon icon="heroicons:sun" class="w-5 h-5" />
-    </button>
+    <ThemeSelect />
     <div>
       <div class="dropdown dropdown-bottom dropdown-end">
         <div tabindex="0" class="btn btn-circle btn-ghost btn-sm" role="button">
