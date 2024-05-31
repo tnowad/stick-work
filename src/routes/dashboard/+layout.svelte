@@ -1,9 +1,12 @@
 <script lang="ts">
   import ThemeSelect from '$lib/components/theme-select.svelte';
   import { AppRoute } from '$lib/constants';
+  import { cn } from '$lib/utils/classnames';
   import type { LayoutData } from './$types';
   import Icon from '@iconify/svelte';
   export let data: LayoutData;
+
+  let showSearchModal = false;
 
   const notifications = [
     {
@@ -82,6 +85,7 @@
     </button>
     <button
       aria-label="Search button"
+      onclick={() => (showSearchModal = true)}
       class="btn hidden w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline"
     >
       <Icon icon="heroicons:magnifying-glass" class="w-5 h-5" />
@@ -89,12 +93,18 @@
     </button>
     <button
       aria-label="Search button"
+      onclick={() => (showSearchModal = true)}
       class="btn flex border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:hidden btn-sm btn-circle btn-outline"
     >
       <Icon icon="heroicons:magnifying-glass" class="w-5 h-5 " />
     </button>
 
-    <dialog aria-label="Modal" class="modal">
+    <dialog
+      aria-label="Modal"
+      class={cn('modal', {
+        'modal-open': showSearchModal
+      })}
+    >
       <div class="modal-box p-0">
         <div class="form-control flex-row items-center rounded-box p-2 px-5">
           <Icon icon="heroicons:magnifying-glass" class="w-5 h-5" />
@@ -102,11 +112,13 @@
             placeholder="Search along files"
             class="input w-full text-base focus:border-transparent focus:outline-0 input-sm focus:outline-offset-0"
           />
-          <form method="dialog">
-            <button aria-label="Close search modal" class="btn gap-2 btn-sm btn-circle btn-ghost">
-              <Icon icon="heroicons:x-mark" class="w-5 h-5" />
-            </button>
-          </form>
+          <button
+            onclick={() => (showSearchModal = false)}
+            aria-label="Close search modal"
+            class="btn gap-2 btn-sm btn-circle btn-ghost"
+          >
+            <Icon icon="heroicons:x-mark" class="w-5 h-5" />
+          </button>
         </div>
         <div class="border-t border-base-content/10">
           <ul class="menu">
