@@ -100,8 +100,11 @@
       <Icon icon="heroicons:bars-3" class="w-5 h-5" />
     </button>
     <button
-      aria-label="Search button"
-      onclick={() => (showSearchModal = true)}
+      aria-label={showSearchModal ? 'Close search modal' : 'Open search modal'}
+      aria-expanded={showSearchModal}
+      aria-haspopup="dialog"
+      aria-controls="search-modal"
+      onclick={() => (showSearchModal = !showSearchModal)}
       class="btn hidden w-48 items-center justify-start gap-3 border-base-content/20 hover:border-transparent hover:bg-base-content/20 sm:flex btn-sm btn-outline"
     >
       <Icon icon="heroicons:magnifying-glass" class="w-5 h-5" />
@@ -115,10 +118,15 @@
       <Icon icon="heroicons:magnifying-glass" class="w-5 h-5 " />
     </button>
 
-    <dialog
-      aria-label="Modal"
+    <div
+      aria-label="Search modal"
+      aria-modal="true"
+      aria-hidden={!showSearchModal}
+      role="dialog"
+      id="search-modal"
       class={cn('modal', {
-        'modal-open': showSearchModal
+        'modal-open': showSearchModal,
+        hidden: !showSearchModal
       })}
     >
       <div class="modal-box p-0">
@@ -160,10 +168,8 @@
           </ul>
         </div>
       </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
+      <button onclick={() => (showSearchModal = false)}>close</button>
+    </div>
   </div>
   <div class="navbar-center"></div>
   <div class="gap-1.5 navbar-end">
