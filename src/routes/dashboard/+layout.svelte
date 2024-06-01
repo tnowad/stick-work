@@ -3,11 +3,11 @@
   import { AppRoute } from '$lib/constants';
   import { cn } from '$lib/utils/classnames';
   import { onMount } from 'svelte';
-  import type { LayoutData } from './$types';
   import Icon from '@iconify/svelte';
-  export let data: LayoutData;
 
-  let showSearchModal = false;
+  let { data } = $props();
+
+  let showSearchModal = $state(false);
 
   const notifications = [
     {
