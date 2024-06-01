@@ -122,6 +122,7 @@
       aria-label="Search modal"
       aria-modal="true"
       aria-hidden={!showSearchModal}
+      onkeydown={(e) => e.key === 'Escape' && (showSearchModal = false)}
       role="dialog"
       id="search-modal"
       class={cn('modal', {
@@ -133,7 +134,8 @@
         <div class="form-control flex-row items-center rounded-box p-2 px-5">
           <Icon icon="heroicons:magnifying-glass" class="w-5 h-5" />
           <input
-            placeholder="Search along files"
+            placeholder="Search for anything..."
+            aria-label="Search input"
             class="input w-full text-base focus:border-transparent focus:outline-0 input-sm focus:outline-offset-0"
           />
           <button
@@ -144,31 +146,31 @@
             <Icon icon="heroicons:x-mark" class="w-5 h-5" />
           </button>
         </div>
+
         <div class="border-t border-base-content/10">
-          <ul class="menu">
-            <li class="menu-title">Actions</li>
+          <ul class="menu" role="list">
+            <li class="menu-title" role="heading" aria-level="3">Actions</li>
             {#each actions as action}
-              <li class="">
-                <div>
+              <li role="listitem">
+                <a href={action.link} class="flex items-center w-full text-left p-2">
                   <Icon icon={action.icon} class="w-5 h-5" />
-                  <p class="grow text-sm">{action.title}</p>
-                </div>
+                  <span class="grow text-sm">{action.title}</span>
+                </a>
               </li>
             {/each}
             <hr class="-mx-2 mt-3 h-px border-base-content/10" />
-            <li class="menu-title">Quick Links</li>
+            <li class="menu-title" role="heading" aria-level="3">Quick Links</li>
             {#each quickLinks as quickLink}
-              <li class="">
-                <div>
+              <li role="listitem">
+                <a href={quickLink.link} class="flex items-center w-full text-left p-2">
                   <Icon icon={quickLink.icon} class="w-5 h-5" />
-                  <p class="grow text-sm">{quickLink.title}</p>
-                </div>
+                  <span class="grow text-sm">{quickLink.title}</span>
+                </a>
               </li>
             {/each}
           </ul>
         </div>
       </div>
-      <button onclick={() => (showSearchModal = false)}>close</button>
     </div>
   </div>
   <div class="navbar-center"></div>
