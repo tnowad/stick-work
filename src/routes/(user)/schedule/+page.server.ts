@@ -1,6 +1,6 @@
 import admin from '$lib/firebase/firebase.admin';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 
 type Event = {
   id: string;
@@ -79,4 +79,24 @@ export const load: PageServerLoad = async ({ locals }) => {
     calendars,
     events
   };
+};
+
+export const actions: Actions = {
+  createCalendar: async ({ request, locals }) => {
+    const uid = locals.user?.uid;
+
+    if (!uid) {
+      throw error(401, 'Unauthorized');
+    }
+    const formData = await request.formData();
+
+    const name = formData.get('name') as string;
+
+    const db = admin.firestore();
+
+    await db.collection('calendars').add({
+      userId: uid,
+      name
+    });
+  }
 };
