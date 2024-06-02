@@ -1,7 +1,10 @@
 import admin from '$lib/firebase/firebase.admin';
-import { error } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import type { Calendar, Event } from '$lib/types';
+import { zfd } from 'zod-form-data';
+import { z } from 'zod';
+import { StatusCodes } from 'http-status-codes';
 
 export const load: PageServerLoad = async ({ locals }) => {
   const uid = locals.user?.uid;
@@ -61,19 +64,39 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
   createCalendar: async ({ request, locals }) => {
     const uid = locals.user?.uid;
+    const formData = await request.formData();
 
     if (!uid) {
       throw error(401, 'Unauthorized');
     }
-    const formData = await request.formData();
 
-    const name = formData.get('name') as string;
+    try {
+      const { calendarName: name } = zfd
+        .formData({
+          calendarName: zfd.text(z.string().min(1).max(100))
+        })
+        .parse(formData);
 
-    const db = admin.firestore();
+      const db = admin.firestore();
 
-    await db.collection('calendars').add({
-      userId: uid,
-      name
-    });
+      await db.collection('calendars').add({
+        userId: uid,
+        name
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return fail(StatusCodes.UNPROCESSABLE_ENTITY, {
+          success: false,
+          errors: error.flatten().fieldErrors
+        });
+      }
+
+      console.error(error);
+
+      return fail(StatusCodes.INTERNAL_SERVER_ERROR, {
+        success: false,
+        message: 'An unknown error occurred'
+      });
+    }
   }
 };

@@ -2,7 +2,7 @@
   import { enhance } from '$app/forms';
   import Scheduler from '$lib/components/scheduler.svelte';
 
-  const { data } = $props();
+  const { data, form } = $props();
 </script>
 
 <svelte:head>
@@ -35,7 +35,12 @@
   <form method="post" action="?/createCalendar" use:enhance>
     <h3>Create Calendar</h3>
     <label for="calendar-name">Name</label>
-    <input type="text" name="name" id="calendar-name" />
+    <input type="text" name="calendarName" id="calendar-name" />
+
+    {#if form?.errors?.calendarName}
+      <p>{form.errors?.calendarName}</p>
+    {/if}
+
     <button type="submit">Create</button>
   </form>
 
