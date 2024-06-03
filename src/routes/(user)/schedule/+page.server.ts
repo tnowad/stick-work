@@ -26,7 +26,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 
   const calendars: Calendar[] = calendarsSnapshot.docs.map((doc) => ({
     id: doc.id,
-    name: doc.data().name
+    name: doc.data().name,
+    userId: doc.data().userId
   }));
 
   const events: Event[] = eventsSnapshot.docs.map((doc) => ({
