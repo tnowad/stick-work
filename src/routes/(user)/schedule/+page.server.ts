@@ -5,6 +5,7 @@ import type { Calendar, Event } from '$lib/types';
 import { zfd } from 'zod-form-data';
 import { z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
+import { logger } from '$lib/logger';
 
 export const load: PageServerLoad = async ({ locals }) => {
   const uid = locals.user?.uid;
@@ -91,7 +92,7 @@ export const actions: Actions = {
         });
       }
 
-      console.error(error);
+      logger.error('Failed to create calendar', error);
 
       return fail(StatusCodes.INTERNAL_SERVER_ERROR, {
         success: false,
