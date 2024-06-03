@@ -138,14 +138,20 @@ export const actions: Actions = {
     try {
       // TODO: Add validation for start and end dates (end must be after start)
       const schema = zfd.formData({
-        name: zfd.text(z.string().min(1).max(100)),
-        start: zfd.text(z.coerce.date()),
-        end: zfd.text(z.coerce.date()),
-        description: zfd.text(z.string().min(0).max(500)),
-        calendarId: zfd.text(z.string().min(1))
+        eventName: zfd.text(z.string().min(1).max(100)),
+        eventStart: zfd.text(z.coerce.date()),
+        eventEnd: zfd.text(z.coerce.date()),
+        eventDescription: zfd.text(z.string().min(0).max(500).optional()),
+        eventCalendar: zfd.text(z.string().min(1))
       });
 
-      const { name, start, end, description, calendarId } = schema.parse(formData);
+      const {
+        eventName: name,
+        eventStart: start,
+        eventEnd: end,
+        eventDescription: description = '',
+        eventCalendar: calendarId
+      } = schema.parse(formData);
 
       // TODO: Add validation for calendarId (must exist and belong to the user)
       const db = admin.firestore();
@@ -155,7 +161,13 @@ export const actions: Actions = {
         start,
         end,
         description,
-        calendarId
+        calendarId,
+        repeat: {
+          start: new Date(),
+          end: new Date(),
+          type: 'none',
+          interval: 0
+        }
       });
 
       logger.info('Event created successfully', { userId: uid, eventName: name });
