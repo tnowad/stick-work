@@ -3,7 +3,7 @@ import { error, fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import type { Calendar, Event } from '$lib/types';
 import { zfd } from 'zod-form-data';
-import { z } from 'zod';
+import { ZodError, z } from 'zod';
 import { StatusCodes } from 'http-status-codes';
 import { logger } from '$lib/logger';
 
@@ -65,35 +65,51 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
   createCalendar: async ({ request, locals }) => {
     const uid = locals.user?.uid;
-    const formData = await request.formData();
-
     if (!uid) {
-      throw error(401, 'Unauthorized');
+      logger.warn('Unauthorized access attempt');
+      throw error(StatusCodes.UNAUTHORIZED, 'Unauthorized');
+    }
+
+    let formData;
+    try {
+      formData = await request.formData();
+    } catch (err) {
+      logger.error('Failed to parse form data', { error: err });
+      return fail(StatusCodes.BAD_REQUEST, {
+        success: false,
+        message: 'Invalid form data'
+      });
     }
 
     try {
-      const { calendarName: name } = zfd
-        .formData({
-          calendarName: zfd.text(z.string().min(1).max(100))
-        })
-        .parse(formData);
+      const schema = zfd.formData({
+        calendarName: zfd.text(z.string().min(1).max(100))
+      });
+
+      const { calendarName: name } = schema.parse(formData);
 
       const db = admin.firestore();
-
       await db.collection('calendars').add({
         userId: uid,
         name
       });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
+
+      logger.info('Calendar created successfully', { userId: uid, calendarName: name });
+
+      return {
+        success: true,
+        message: 'Calendar created successfully'
+      };
+    } catch (err) {
+      if (err instanceof ZodError) {
+        logger.warn('Validation error', { errors: err.flatten().fieldErrors });
         return fail(StatusCodes.UNPROCESSABLE_ENTITY, {
           success: false,
-          errors: error.flatten().fieldErrors
+          errors: err.flatten().fieldErrors
         });
       }
 
-      logger.error('Failed to create calendar', error);
-
+      logger.error('Failed to create calendar', { error: err });
       return fail(StatusCodes.INTERNAL_SERVER_ERROR, {
         success: false,
         message: 'An unknown error occurred'
