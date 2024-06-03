@@ -115,5 +115,69 @@ export const actions: Actions = {
         message: 'An unknown error occurred'
       });
     }
+  },
+
+  createEvent: async ({ request, locals }) => {
+    const uid = locals.user?.uid;
+    if (!uid) {
+      logger.warn('Unauthorized access attempt');
+      throw error(StatusCodes.UNAUTHORIZED, 'Unauthorized');
+    }
+
+    let formData;
+    try {
+      formData = await request.formData();
+    } catch (err) {
+      logger.error('Failed to parse form data', { error: err });
+      return fail(StatusCodes.BAD_REQUEST, {
+        success: false,
+        message: 'Invalid form data'
+      });
+    }
+
+    try {
+      // TODO: Add validation for start and end dates (end must be after start)
+      const schema = zfd.formData({
+        name: zfd.text(z.string().min(1).max(100)),
+        start: zfd.text(z.coerce.date()),
+        end: zfd.text(z.coerce.date()),
+        description: zfd.text(z.string().min(0).max(500)),
+        calendarId: zfd.text(z.string().min(1))
+      });
+
+      const { name, start, end, description, calendarId } = schema.parse(formData);
+
+      // TODO: Add validation for calendarId (must exist and belong to the user)
+      const db = admin.firestore();
+      await db.collection('events').add({
+        userId: uid,
+        name,
+        start,
+        end,
+        description,
+        calendarId
+      });
+
+      logger.info('Event created successfully', { userId: uid, eventName: name });
+
+      return {
+        success: true,
+        message: 'Event created successfully'
+      };
+    } catch (err) {
+      if (err instanceof ZodError) {
+        logger.warn('Validation error', { errors: err.flatten().fieldErrors });
+        return fail(StatusCodes.UNPROCESSABLE_ENTITY, {
+          success: false,
+          errors: err.flatten().fieldErrors
+        });
+      }
+
+      logger.error('Failed to create event', { error: err });
+      return fail(StatusCodes.INTERNAL_SERVER_ERROR, {
+        success: false,
+        message: 'An unknown error occurred'
+      });
+    }
   }
 };
