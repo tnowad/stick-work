@@ -13,7 +13,15 @@ export interface LogEntry {
 }
 
 const log = (entry: LogEntry) => {
-  console.log(JSON.stringify(entry, null, 2));
+  const consoleMethod = entry.level === LogLevel.ERROR ? 'error' : 'log';
+  if (entry.data) {
+    console[consoleMethod](
+      `${entry.timestamp.toISOString()} [${entry.level}] ${entry.message}`,
+      entry.data
+    );
+  } else {
+    console[consoleMethod](`${entry.timestamp.toISOString()} [${entry.level}] ${entry.message}`);
+  }
 };
 
 export const logger = {
