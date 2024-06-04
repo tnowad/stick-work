@@ -1,10 +1,10 @@
 <script lang="ts">
   import './global.css';
   import { navigating } from '$app/stores';
-  import type { LayoutData } from './$types';
-  export let data: LayoutData;
 
-  let isNavigating = false;
+  const { data, children } = $props();
+
+  let isNavigating = $state(false);
 
   navigating.subscribe((value) => {
     if (value) {
@@ -26,4 +26,4 @@
   </span>
 {/if}
 
-<slot />
+{@render children()}

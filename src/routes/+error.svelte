@@ -47,7 +47,7 @@
     }
   ];
 
-  let showTypingIndicator = true;
+  let showTypingIndicator = $state(true);
 
   const conversationPromises = conversations.map((conversation, index) => {
     return new Promise((resolve) => {

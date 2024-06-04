@@ -5,7 +5,7 @@
   import { onMount } from 'svelte';
   import Icon from '@iconify/svelte';
 
-  let { data } = $props();
+  const { data, children } = $props();
 
   let showSearchModal = $state(false);
 
@@ -279,4 +279,4 @@
   </div>
 </div>
 
-<slot />
+{@render children()}
