@@ -34,6 +34,10 @@ export function createToaster() {
     return id;
   }
 
+  function remove(id: string) {
+    update((toasts) => toasts.filter((toast) => toast.id !== id));
+  }
+
   return {
     subscribe,
     add,
