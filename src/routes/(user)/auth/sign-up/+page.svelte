@@ -3,6 +3,7 @@
   import { goto } from '$app/navigation';
   import { AppRoute } from '$lib/constants';
   import { firebaseAuth } from '$lib/firebase/firebase.app';
+  import { toaster } from '$lib/stores/toasts.store';
   import {
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
@@ -32,6 +33,13 @@
 
           return async ({ result }) => {
             if (result.type === 'success') {
+              toaster.add({
+                title: 'Success',
+                message: 'You have successfully signed up.',
+                type: 'success',
+                duration: 5000,
+                closable: true
+              });
               await goto(AppRoute.HOME, { invalidateAll: true });
               return;
             }
@@ -88,6 +96,13 @@
 
           return async ({ result }) => {
             if (result.type === 'success') {
+              toaster.add({
+                title: 'Success',
+                message: 'You have successfully signed up.',
+                type: 'success',
+                duration: 5000,
+                closable: true
+              });
               await goto(AppRoute.HOME, { invalidateAll: true });
               return;
             }
