@@ -1,3 +1,4 @@
+import { writable } from 'svelte/store';
 
 export type Toast = {
   id: string;
@@ -8,3 +9,12 @@ export type Toast = {
   closable: boolean;
 };
 
+export function createToaster() {
+  const { subscribe, update } = writable<Toast[]>([]);
+
+  return {
+    subscribe,
+  };
+}
+
+export const toaster = createToaster();
