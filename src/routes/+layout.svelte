@@ -1,6 +1,7 @@
 <script lang="ts">
   import './global.css';
   import { navigating } from '$app/stores';
+  import Toast from '$lib/components/toast.svelte';
 
   const { data, children } = $props();
 
@@ -25,5 +26,7 @@
     <img src="/loading.gif" class="w-20 h-20" alt="loading" />
   </span>
 {/if}
+
+<Toast />
 
 {@render children()}
