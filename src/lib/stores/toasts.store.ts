@@ -12,8 +12,32 @@ export type Toast = {
 export function createToaster() {
   const { subscribe, update } = writable<Toast[]>([]);
 
+  function add({
+    title = '',
+    message = '',
+    type = 'info',
+    duration = 5000,
+    closable = true
+  }: Omit<Toast, 'id'>) {
+    const id = String(crypto.randomUUID());
+    update((toasts) => [
+      ...toasts,
+      {
+        id,
+        title,
+        message,
+        type,
+        duration,
+        closable
+      }
+    ]);
+    return id;
+  }
+
   return {
     subscribe,
+    add,
+    remove
   };
 }
 
