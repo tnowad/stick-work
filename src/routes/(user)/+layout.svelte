@@ -4,6 +4,6 @@
   export let data: LayoutData;
 </script>
 
-<Navbar user={data.user} role={data.role} />
+<Navbar user={data.user} />
 
 <slot />

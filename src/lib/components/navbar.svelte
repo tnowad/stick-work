@@ -1,10 +1,9 @@
 <script lang="ts">
   import ThemeSelect from '$lib/components/theme-select.svelte';
   import { AppRoute } from '$lib/constants';
-  import type { DecodedIdToken } from 'firebase-admin/auth';
+  import type { User } from '$lib/types';
 
-  export let user: DecodedIdToken | undefined;
-  export let role: 'admin' | 'user' | undefined;
+  export let user: User | undefined;
 </script>
 
 <div class="navbar bg-base-100">
@@ -37,7 +36,7 @@
           </li>
           <li><a href={AppRoute.SETTINGS}>Settings</a></li>
 
-          {#if role === 'admin'}
+          {#if user?.role === 'admin'}
             <li><a href={AppRoute.DASHBOARD}>Dashboard</a></li>
           {/if}
 
