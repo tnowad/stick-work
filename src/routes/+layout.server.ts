@@ -5,7 +5,6 @@ export const load: LayoutServerLoad = ({ locals }) => {
     meta: {
       title: 'Stick Work'
     },
-    user: locals.user,
-    role: locals.role
+    user: locals.user
   };
 };
