@@ -1,4 +1,4 @@
-import type { DecodedIdToken } from 'firebase-admin/auth';
+import type { User } from '$lib/types';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
@@ -6,8 +6,7 @@ declare global {
   namespace App {
     // interface Error {}
     interface Locals {
-      user?: DecodedIdToken;
-      role?: 'admin' | 'user';
+      user?: User;
     }
     interface PageData {
       meta: {
