@@ -6,3 +6,11 @@ enum Actions {
   DELETE = 'delete'
 }
 
+enum Subjects {
+  DASHBOARD = 'dashboard',
+  CALENDAR = 'calendar',
+  EVENT = 'event',
+  USER = 'user',
+  ROLE = 'role'
+}
+
