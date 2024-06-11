@@ -1,23 +1,11 @@
-import { AppRoute } from '$lib/constants';
+import { defineAbilitiesForUser } from '$lib/abilities/define.ability';
+import { appRoutesConfigs } from '$lib/constants';
 import admin from '$lib/firebase/firebase.admin';
 import type { User } from '$lib/types';
+import { getRouteConfigs } from '$lib/utils/route.util';
 import { error, redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import NodeCache from 'node-cache';
-
-const authRequiredPaths = new Set([
-  AppRoute.PROFILE,
-  AppRoute.SETTINGS,
-  AppRoute.SCHEDULE,
-  AppRoute.AUTH_SIGN_OUT
-]);
-const adminRequiredPaths = new Set([AppRoute.DASHBOARD, AppRoute.DASHBOARD_USER_MANAGEMENT]);
-
-const isAuthRequiredPath = (path: string) => authRequiredPaths.has(path as AppRoute);
-const isAdminRequiredPath = (path: string) => adminRequiredPaths.has(path as AppRoute);
-
-const isAuth = (event: RequestEvent) => event?.locals?.user;
-const isAdmin = (event: RequestEvent) => event?.locals?.user?.role === 'admin';
 
 const userCache = new NodeCache({ stdTTL: 60 * 10 });
 
@@ -52,11 +40,22 @@ const tryGetCurrentUser = async (event: RequestEvent) => {
 };
 
 const checkAccess = async (event: RequestEvent) => {
-  if (isAuthRequiredPath(event.url.pathname) && !isAuth(event)) {
-    throw redirect(302, AppRoute.AUTH_SIGN_IN);
+  const user = event.locals.user;
+
+  const ability = defineAbilitiesForUser(user);
+
+  const routeConfigs = getRouteConfigs(appRoutesConfigs, event.url.pathname, event.params);
+
+  if (!routeConfigs) {
+    return;
   }
 
-  if (isAdminRequiredPath(event.url.pathname) && !isAdmin(event)) {
-    throw error(403, 'Forbidden');
+  const canAccess = ability.can(routeConfigs.action, routeConfigs.subject);
+  if (!canAccess) {
+    if (routeConfigs.onReject) {
+      await routeConfigs.onReject();
+    } else {
+      return error(403, 'Forbidden');
+    }
   }
 };
