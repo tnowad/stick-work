@@ -2,7 +2,7 @@ import type { User } from '$lib/types';
 import { Role } from '$lib/types/user.type';
 import { defineAbility } from '@casl/ability';
 
-enum Actions {
+export enum Action {
   MANAGE = 'manage',
   CREATE = 'create',
   READ = 'read',
@@ -10,7 +10,10 @@ enum Actions {
   DELETE = 'delete'
 }
 
-enum Subjects {
+export enum Subject {
+  PUBLIC = 'public',
+  AUTHENTICATED = 'authenticated',
+
   DASHBOARD = 'dashboard',
   CALENDAR = 'calendar',
   EVENT = 'event',
@@ -20,24 +23,28 @@ enum Subjects {
 
 export const defineAbilitiesForUser = (user?: User) => {
   return defineAbility((can) => {
+    can(Action.READ, Subject.PUBLIC);
+
     if (!user) {
       return;
     }
 
+    can(Action.READ, Subject.AUTHENTICATED);
+    can([Action.READ, Action.UPDATE], Subject.USER, { uid: user.uid });
+
     switch (user.role) {
       case Role.ADMIN:
-        can(Actions.MANAGE, Subjects.DASHBOARD);
-        can(Actions.MANAGE, Subjects.USER);
-        can(Actions.MANAGE, Subjects.ROLE);
-        can(Actions.MANAGE, Subjects.CALENDAR);
-        can(Actions.MANAGE, Subjects.EVENT);
+        can(Action.MANAGE, Subject.DASHBOARD);
+        can(Action.MANAGE, Subject.USER);
+        can(Action.MANAGE, Subject.ROLE);
+        can(Action.MANAGE, Subject.CALENDAR);
+        can(Action.MANAGE, Subject.EVENT);
         break;
       case Role.USER:
-        can([Actions.READ, Actions.UPDATE, Actions.DELETE], [Subjects.CALENDAR, Subjects.EVENT], {
+        can([Action.READ, Action.UPDATE, Action.DELETE], [Subject.CALENDAR, Subject.EVENT], {
           userId: user.uid
         });
         break;
     }
-    can([Actions.READ, Actions.UPDATE], Subjects.USER, { uid: user.uid });
   });
 };
