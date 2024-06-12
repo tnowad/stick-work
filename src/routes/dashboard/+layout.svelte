@@ -246,7 +246,7 @@
           </div>
           <div class="flex flex-col items-start">
             <p class="text-sm/none">{data.user?.email}</p>
-            <p class="mt-1 text-xs/none text-primary uppercase">{data.role}</p>
+            <p class="mt-1 text-xs/none text-primary uppercase">{data.user?.role}</p>
           </div>
         </div>
       </div>
