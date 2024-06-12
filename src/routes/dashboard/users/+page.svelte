@@ -1,6 +1,7 @@
 <script lang="ts">
   import { AppRoute } from '$lib/constants';
   import type { PageData } from './$types';
+  import { urlBuilder } from '$lib/utils/route.util';
 
   export let data: PageData;
   console.log(data);
@@ -97,7 +98,7 @@
                 ><a
                   aria-label="Show user"
                   class="btn btn-sm btn-square btn-ghost"
-                  href={`${AppRoute.DASHBOARD_USER_MANAGEMENT}/${user.uid}`}
+                  href={urlBuilder(AppRoute.DASHBOARD_USER_DETAIL, { params: { id: user.uid } })}
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink"

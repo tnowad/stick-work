@@ -16,3 +16,33 @@ export const getRouteConfigs = (
   if (!route) return null;
   return appRoutesConfigs[route];
 };
+
+export const urlBuilder = <T = AppRoute>(
+  route: T,
+  options?: {
+    params?: Record<string, string>;
+    query?: Record<string, string>;
+  }
+): string => {
+  let url = String(route);
+
+  if (!options) return url;
+  const { params, query } = options;
+
+  if (params) {
+    url = Object.entries(params).reduce((prevUrl, [key, value]) => {
+      return prevUrl.replace(`[${key}]`, value);
+    }, url);
+  }
+
+  if (query) {
+    const queryString = new URLSearchParams(query).toString();
+    url += `?${queryString}`;
+  }
+
+  if (url.includes('[')) {
+    throw new Error('Missing params');
+  }
+
+  return url;
+};
