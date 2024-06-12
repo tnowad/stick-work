@@ -1,6 +1,6 @@
 <script lang="ts">
   import { toaster, type Toast } from '$lib/stores/toasts.store';
-  import { cn } from '$lib/utils/classnames';
+  import { cn } from '$lib/utils/classname.util';
   import Icon from '@iconify/svelte';
   import { onDestroy } from 'svelte';
 

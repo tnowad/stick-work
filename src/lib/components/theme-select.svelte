@@ -1,6 +1,6 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import { cn } from '$lib/utils/classnames';
+  import { cn } from '$lib/utils/classname.util';
   import { onMount } from 'svelte';
   import { Theme } from '$lib/constants';
   const COLOR_THEME_KEY = 'color-theme';

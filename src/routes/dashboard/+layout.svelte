@@ -1,7 +1,7 @@
 <script lang="ts">
   import ThemeSelect from '$lib/components/theme-select.svelte';
   import { AppRoute } from '$lib/constants';
-  import { cn } from '$lib/utils/classnames';
+  import { cn } from '$lib/utils/classname.util';
   import { onMount } from 'svelte';
   import Icon from '@iconify/svelte';
 
