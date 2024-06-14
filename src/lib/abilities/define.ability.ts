@@ -18,6 +18,7 @@ export enum Subject {
   CALENDAR = 'calendar',
   EVENT = 'event',
   USER = 'user',
+  USER_SETTING = 'user-setting',
   ROLE = 'role'
 }
 
@@ -31,6 +32,7 @@ export const defineAbilitiesForUser = (user?: User) => {
 
     can(Action.READ, Subject.AUTHENTICATED);
     can([Action.READ, Action.UPDATE], Subject.USER, { uid: user.uid });
+    can(Action.READ, Subject.USER_SETTING);
 
     switch (user.role) {
       case Role.ADMIN:
