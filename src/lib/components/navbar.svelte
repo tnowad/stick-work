@@ -2,8 +2,11 @@
   import ThemeSelect from '$lib/components/theme-select.svelte';
   import { AppRoute } from '$lib/constants';
   import type { User } from '$lib/types';
+  import Icon from '@iconify/svelte';
+  import type { MenuItem } from './navbar';
 
   export let user: User | undefined;
+  export let menuItems: MenuItem[];
 </script>
 
 <div class="navbar bg-base-100">
@@ -27,20 +30,19 @@
           tabindex="0"
           class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
         >
-          <li><a href={AppRoute.SCHEDULE}>Schedule</a></li>
-          <li>
-            <a href={AppRoute.PROFILE} class="justify-between">
-              Profile
-              <span class="badge">New</span>
-            </a>
-          </li>
-          <li><a href={AppRoute.SETTINGS}>Settings</a></li>
-
-          {#if user?.role === 'admin'}
-            <li><a href={AppRoute.DASHBOARD}>Dashboard</a></li>
-          {/if}
-
-          <li><a href={AppRoute.AUTH_SIGN_OUT}>Sign out</a></li>
+          {#each menuItems as { title, href, badge, icon }}
+            <li>
+              <a {href} role="menuitem">
+                {#if icon}
+                  <Icon {icon} class="w-5 h-5" />
+                {/if}
+                {title}
+                {#if badge}
+                  <span class="badge badge-primary">{badge}</span>
+                {/if}
+              </a>
+            </li>
+          {/each}
         </ul>
       </div>
     {:else}
