@@ -1,9 +1,9 @@
 <script lang="ts">
   import Navbar from '$lib/components/navbar.svelte';
-  import type { LayoutData } from './$types';
-  export let data: LayoutData;
+
+  const { data, children } = $props();
 </script>
 
-<Navbar user={data.user} />
+<Navbar user={data.user} menuItems={data.menuItems} />
 
-<slot />
+{@render children()}
