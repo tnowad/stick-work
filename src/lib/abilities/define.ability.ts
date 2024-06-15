@@ -14,6 +14,7 @@ export enum Subject {
   PUBLIC = 'public',
   AUTHENTICATED = 'authenticated',
 
+  AUTH = 'auth',
   DASHBOARD = 'dashboard',
   CALENDAR = 'calendar',
   EVENT = 'event',
