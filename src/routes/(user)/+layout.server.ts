@@ -1,9 +1,10 @@
-import { Action, Subject, defineAbilitiesForUser } from '$lib/abilities/define.ability';
+import { Action, Subject } from '$lib/abilities/define.ability';
 import type { MenuItem } from '$lib/components/navbar';
 import { AppRoute } from '$lib/constants';
 import type { LayoutServerLoad } from './$types';
+
 export const load: LayoutServerLoad = async ({ locals }) => {
-  const ability = defineAbilitiesForUser(locals.user);
+  const ability = locals.ability;
 
   const menuItems: MenuItem[] = [];
 

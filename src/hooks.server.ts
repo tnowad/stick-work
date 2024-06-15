@@ -3,7 +3,7 @@ import { appRoutesConfigs } from '$lib/constants';
 import admin from '$lib/firebase/firebase.admin';
 import type { User } from '$lib/types';
 import { getRouteConfigs } from '$lib/utils/route.util';
-import { error, redirect, type Handle, type RequestEvent } from '@sveltejs/kit';
+import { error, type Handle, type RequestEvent } from '@sveltejs/kit';
 import type { DecodedIdToken } from 'firebase-admin/auth';
 import NodeCache from 'node-cache';
 
@@ -11,6 +11,7 @@ const userCache = new NodeCache({ stdTTL: 60 * 10 });
 
 export const handle: Handle = async ({ event, resolve }) => {
   await tryGetCurrentUser(event);
+  await getAbility(event);
   await checkAccess(event);
 
   return await resolve(event);
@@ -39,10 +40,16 @@ const tryGetCurrentUser = async (event: RequestEvent) => {
   }
 };
 
-const checkAccess = async (event: RequestEvent) => {
+const getAbility = async (event: RequestEvent) => {
   const user = event.locals.user;
 
   const ability = defineAbilitiesForUser(user);
+
+  event.locals.ability = ability;
+};
+
+const checkAccess = async (event: RequestEvent) => {
+  const ability = event.locals.ability;
 
   const routeConfigs = getRouteConfigs(appRoutesConfigs, event.url.pathname, event.params);
 
