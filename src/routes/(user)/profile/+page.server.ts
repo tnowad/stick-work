@@ -19,6 +19,7 @@ export const load: PageServerLoad = async ({ locals }) => {
       disabled,
       phoneNumber,
       emailVerified,
+      role: customClaims?.role || 'user',
       customClaims
     },
     meta: {
