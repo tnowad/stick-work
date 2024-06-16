@@ -34,6 +34,7 @@ export const defineAbilitiesForUser = (user?: User) => {
     can(Action.READ, Subject.AUTHENTICATED);
     can([Action.READ, Action.UPDATE], Subject.USER, { uid: user.uid });
     can(Action.READ, Subject.USER_SETTING);
+    can(Action.DELETE, Subject.AUTH);
 
     switch (user.role) {
       case Role.ADMIN:
