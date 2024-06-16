@@ -8,17 +8,16 @@
 </script>
 
 <section class="hero min-h-screen bg-base-200">
-  <div class="hero-content flex-col lg:flex-row-reverse">
-    <div class="text-center lg:text-left">
-      <h1 class="text-5xl font-bold">Sign In Now!</h1>
-      <p class="py-6">Sign in to access your account and start using our services.</p>
+  <div class="card w-full max-w-md shadow-xl bg-white">
+    <div class="card-header flex justify-center items-center pt-8">
+      <h2 class="card-title text-2xl">Sign In</h2>
     </div>
-    <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
-      <form
-        class="card-body pb-0"
-        method="post"
-        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
-        use:enhance={async ({ formData }) => {
+
+    <form
+      class="card-body pb-0"
+      method="post"
+      action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
+      use:enhance={async ({ formData }) => {
           const email = formData.get('email') as string;
           const password = formData.get('password') as string;
 
@@ -41,80 +40,79 @@
             await applyAction(result);
           };
         }}
-      >
-        <div class="form-control">
-          <label class="label" for="emailInput">
-            <span class="label-text">Email</span>
-          </label>
-          <input
-            type="email"
-            name="email"
-            placeholder="email"
-            id="emailInput"
-            class="input input-bordered"
-            required
-          />
-        </div>
-        <div class="form-control">
-          <label class="label" for="passwordInput">
-            <span class="label-text">Password</span>
-          </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="password"
-            id="passwordInput"
-            class="input input-bordered"
-            required
-          />
-          <div class="label">
-            <a href={AppRoute.AUTH_FORGOT_PASSWORD} class="label-text-alt link link-hover"
-              >Forgot password?</a
-            >
-          </div>
-        </div>
-        <div class="form-control">
-          <button class="btn btn-primary">Login</button>
-        </div>
+    >
+      <div class="form-control">
+        <label class="label" for="emailInput">
+          <span class="label-text">Email</span>
+        </label>
+        <input
+          type="email"
+          name="email"
+          placeholder="email"
+          id="emailInput"
+          class="input input-bordered"
+          required
+        />
+      </div>
+      <div class="form-control">
+        <label class="label" for="passwordInput">
+          <span class="label-text">Password</span>
+        </label>
+        <input
+          type="password"
+          name="password"
+          placeholder="password"
+          id="passwordInput"
+          class="input input-bordered"
+          required
+        />
         <div class="label">
-          <span class="label-text-alt"
-            >Don't have an account? <a
-              href={AppRoute.AUTH_SIGN_UP}
-              class="label-text-alt link link-hover">Sign up now</a
-            >
-          </span>
+          <a href={AppRoute.AUTH_FORGOT_PASSWORD} class="label-text-alt link link-hover"
+            >Forgot password?</a
+          >
         </div>
-      </form>
-      <form
-        class="card-body pt-0"
-        method="post"
-        action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
-        use:enhance={async ({ formData }) => {
-          const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
-          const idToken = await credential.user.getIdToken();
-          formData.set('idToken', idToken);
+      </div>
+      <div class="form-control">
+        <button class="btn btn-primary">Login</button>
+      </div>
+      <div class="label">
+        <span class="label-text-alt"
+          >Don't have an account? <a
+            href={AppRoute.AUTH_SIGN_UP}
+            class="label-text-alt link link-hover">Sign up now</a
+          >
+        </span>
+      </div>
+    </form>
+    <form
+      class="card-body pt-0"
+      method="post"
+      action={`${AppRoute.AUTH_SIGN_IN}/?/signInWithIdToken`}
+      use:enhance={async ({ formData }) => {
+        const credential = await signInWithPopup(firebaseAuth, new GoogleAuthProvider());
+        const idToken = await credential.user.getIdToken();
+        formData.set('idToken', idToken);
 
-          return async ({ result }) => {
-            if (result.type === 'success') {
-              await goto(AppRoute.HOME, { invalidateAll: true });
-              toaster.add({
-                title: 'Success',
-                message: 'You have successfully signed in.',
-                type: 'success',
-                duration: 5000,
-                closable: true
-              });
-              return;
-            }
-            await applyAction(result);
-          };
-        }}
-      >
-        <div class="divider">OR</div>
-        <div class="form-control">
-          <button class="btn">SignIn with Google</button>
-        </div>
-      </form>
-    </div>
+        return async ({ result }) => {
+          if (result.type === 'success') {
+            await goto(AppRoute.HOME, { invalidateAll: true });
+            toaster.add({
+              title: 'Success',
+              message: 'You have successfully signed in.',
+              type: 'success',
+              duration: 5000,
+              closable: true
+            });
+            return;
+          }
+          await applyAction(result);
+        };
+      }}
+    >
+      <div class="divider">OR</div>
+      <div class="form-control">
+        <button class="btn">SignIn with Google</button>
+      </div>
+    </form>
   </div>
 </section>
